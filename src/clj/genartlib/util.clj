@@ -1,5 +1,5 @@
 (ns genartlib.util
-  (:use [quil.core :only [height width PI]])
+  (:use [quil.core :only [height width PI color-mode]])
   (:use [incanter.core :only [$=]]))
 
   (defn h
@@ -27,3 +27,6 @@
     "Returns true if value is between end1 and end2"
     (and ($= value >= ((min end1 end2)))
          ($= value <= ((max end1 end2)))))
+
+  (defn set-color-mode []
+    (color-mode :hsb 360 100 100 1.0))
