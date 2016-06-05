@@ -33,3 +33,6 @@
 
   (defn enumerate [s]
     (map-indexed vector s))
+
+  (defn zip [seq1 seq2]
+    (map vector seq1 seq2))
