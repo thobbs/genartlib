@@ -46,3 +46,13 @@
               (recur (inc i) i (not c))
               (recur (inc i) i c)))
           c))))
+
+  (defn shrink-polygon [points ratio]
+    (let [x-points (map first points)
+          y-points (map second points)
+
+          x-centroid (apply avg x-points)
+          y-centroid (apply avg y-points)]
+      (for [[x y] points]
+        [(interpolate x x-centroid (- 1.0 ratio))
+         (interpolate y y-centroid (- 1.0 ratio))])))
