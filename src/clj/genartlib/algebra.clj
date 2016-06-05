@@ -44,17 +44,16 @@
     (let [x-delta (- x2 x1)
           y-delta (- y2 y1)]
       (if (zero? x-delta)
-        (if ($= y2 > y1)
+        (if (> y2 y1)
           HALF-PI
           (+ HALF-PI PI))
         (if (zero? y-delta)
-          (if ($= x2 > x1)
-            TWO-PI
+          (if (> x2 x1)
+            0
             PI)
-          (let [angle (atan (/ y-delta x-delta))]
-            (if ($= x2 < x1)
-              (+ angle PI)
-              angle))))))
+          (let [angle (atan (/ y-delta x-delta))
+                angle (+ angle (if (neg? x-delta) PI 0))]
+            (mod angle TWO-PI))))))
 
   (defn angular-coords [center-x center-y theta magnitude]
     "Returns an [x y] vector representing a point that is
