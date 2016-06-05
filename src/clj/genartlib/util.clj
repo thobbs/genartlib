@@ -30,3 +30,6 @@
 
   (defn set-color-mode []
     (color-mode :hsb 360 100 100 1.0))
+
+  (defn enumerate [s]
+    (map-indexed vector s))
