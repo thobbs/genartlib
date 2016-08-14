@@ -69,6 +69,8 @@
   (let [r (random 0 1.0)]
     (loop [weight-seen 0
            remaining-items items-and-weights]
-      (if (between? r weight-seen (+ weight-seen (second remaining-items)))
+      (if (= 2 (count remaining-items))
         (first remaining-items)
-        (recur (+ weight-seen (second remaining-items)) (nthrest remaining-items 2))))))
+        (if (between? r weight-seen (+ weight-seen (second remaining-items)))
+          (first remaining-items)
+          (recur (+ weight-seen (second remaining-items)) (nthrest remaining-items 2)))))))
