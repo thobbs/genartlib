@@ -1,7 +1,6 @@
 (ns genartlib.random
   (:use [genartlib.util :only [between?]])
   (:use [quil.core :only [random-gaussian cos sin abs random sqrt TWO-PI]])
-  (:use [incanter.core :only [$=]])
   (:import [org.apache.commons.math3.distribution ParetoDistribution]))
 
 (defn gauss [mean variance]
@@ -26,8 +25,8 @@
    - 'b' is the mode
   "
   (let [x (random 0.0 1.0)
-        transition-point ($= (c - a) / (b - a))]
-    (if ($= x <= transition-point)
+        transition-point (/ (- c a) (- b a))]
+    (if (<= x transition-point)
       (+ a (sqrt (* x (- b a) (- c a))))
       (- b (sqrt (* (1 - x) (- b a) (- b c)))))))
 
@@ -66,11 +65,18 @@
   "Given a sequence of alternating item, weight arguments, chooses one of the
    items with a probability equal to the weight.  Each weight should be
    between 0.0 and 1.0, and all weights should sum to 1.0."
+  (assert (zero? (mod (count items-and-weights) 2)))
+  (assert (>= (count items-and-weights) 2))
   (let [r (random 0 1.0)]
     (loop [weight-seen 0
            remaining-items items-and-weights]
-      (if (= 2 (count remaining-items))
+      (if (<= (count remaining-items) 2)
         (first remaining-items)
-        (if (between? r weight-seen (+ weight-seen (second remaining-items)))
-          (first remaining-items)
-          (recur (+ weight-seen (second remaining-items)) (nthrest remaining-items 2)))))))
+        (let [; -- (println "remaining items:" remaining-items)
+              ; -- (assert (> (count remaining-items) 2))
+              ; -- (assert (not (nil? weight-seen)))
+              new-weight (second remaining-items)
+              end-bound (+ weight-seen new-weight)]
+          (if (between? r weight-seen end-bound)
+            (first remaining-items)
+            (recur (+ weight-seen (second remaining-items)) (drop 2 remaining-items))))))))
