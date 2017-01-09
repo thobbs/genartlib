@@ -23,7 +23,7 @@
      of the form [slope y-intersect start-x end-x]"
     (let [[m b start-x-1 end-x-1] line1
           [n c start-x-2 end-x-2] line2]
-      (when (not= m n)
+      (when (> (abs (- m n)) 0.001)
         (let [x (/ (- c b) (- m n))
               y (+ (* m x) b)]
           (when (and (between? x start-x-1 end-x-1)
