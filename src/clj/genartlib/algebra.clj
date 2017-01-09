@@ -22,13 +22,13 @@
     "Finds the intersection of two lines.  Each line argument is a vector
      of the form [slope y-intersect start-x end-x]"
     (let [[m b start-x-1 end-x-1] line1
-          [n c start-x-2 end-x-2] line2
-          x (/ (- c b) (- m n))
-          y (+ (* m x) b)]
-      (when (and (not= m n)
-                 (between? x start-x-1 end-x-1)
-                 (between? x start-x-2 end-x-2))
-        [x y])))
+          [n c start-x-2 end-x-2] line2]
+      (when (not= m n)
+        (let [x (/ (- c b) (- m n))
+              y (+ (* m x) b)]
+          (when (and (between? x start-x-1 end-x-1)
+                     (between? x start-x-2 end-x-2))
+            [x y])))))
 
   (defn slope [x1 y1 x2 y2]
     "Returns the slope of a line between two points: (x1, y1), (x2, y2)"
