@@ -2,7 +2,7 @@ package genartlib;
 
 public class PolyUtils {
 
-    public static boolean polygonContainsPoint(int[] xPoints, int[] yPoints, int testX, int testY)
+    public static boolean polygonContainsPoint(double[] xPoints, double[] yPoints, double testX, double testY)
     {
         int numVerts = xPoints.length;
         boolean c = false;

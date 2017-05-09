@@ -28,7 +28,7 @@
     "Returns true if a polygon contains the given point.  The polygon
      is defined by the first two arguments: a sequence of x values
      and a sequence of y values that define the polygon."
-    (PolyUtils/polygonContainsPoint (int-array x-verts) (int-array y-verts) (int test-x) (int test-y)))
+    (PolyUtils/polygonContainsPoint (double-array x-verts) (double-array y-verts) (double test-x) (double test-y)))
 
   (defn shrink-polygon [points ratio]
     (let [x-points (map first points)

@@ -80,3 +80,10 @@
           (if (between? r weight-seen end-bound)
             (first remaining-items)
             (recur (+ weight-seen (second remaining-items)) (drop 2 remaining-items))))))))
+
+(defn repeatable-shuffle [items]
+  "A version of shuffle that uses Processing's random fn to ensure that
+   the same random seed is used."
+  (map second
+       (sort (for [item items]
+               [(random 0.0 1.0) item]))))

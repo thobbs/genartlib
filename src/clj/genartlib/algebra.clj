@@ -23,12 +23,50 @@
      of the form [slope y-intersect start-x end-x]"
     (let [[m b start-x-1 end-x-1] line1
           [n c start-x-2 end-x-2] line2]
-      (when (> (abs (- m n)) 0.001)
+      (when (> (Math/abs (- m n)) 0.001)
         (let [x (/ (- c b) (- m n))
               y (+ (* m x) b)]
           (when (and (between? x start-x-1 end-x-1)
                      (between? x start-x-2 end-x-2))
             [x y])))))
+
+  (declare slope)
+  (declare y-intercept)
+
+  (defn lines-intersection-point [[start-x-1 start-y-1] [end-x-1 end-y-1]
+                                  [start-x-2 start-y-2] [end-x-2 end-y-2]]
+
+    (let [slope-1 (slope start-x-1 start-y-1 end-x-1 end-y-1)
+          y-intercept-1 (if (nil? slope-1)
+                          nil
+                          (y-intercept slope-1 start-x-1 start-y-1))
+          slope-2 (slope start-x-2 start-y-2 end-x-2 end-y-2)
+          y-intercept-2 (if (nil? slope-2)
+                          nil
+                          (y-intercept slope-2 start-x-2 start-y-2))]
+
+      (if (nil? slope-1)
+
+        (if (nil? slope-2)
+          nil
+          ; first line is vertical, second line is not; solve for y in second equation
+          (let [line-2-point-y (+ y-intercept-2 (* slope-2 start-x-1))]
+            (if (and (between? start-x-1 start-x-2 end-x-2)
+                     (between? line-2-point-y start-y-1 end-y-1))
+              [start-x-1 line-2-point-y]
+              nil)))
+
+        (if (nil? slope-2)
+          ; second line is vertical, first line is not; solve for y in first equation
+          (let [line-1-point-y (+ y-intercept-1 (* slope-1 start-x-2))]
+            (if (and (between? start-x-2 start-x-1 end-x-1)
+                     (between? line-1-point-y start-y-2 end-y-2))
+              [start-x-2 line-1-point-y]
+              nil))
+
+          ; neither line is vertical
+          (line-intersection [slope-1 y-intercept-1 start-x-1 end-x-1]
+                             [slope-2 y-intercept-2 start-x-2 end-x-2])))))
 
   (defn slope [x1 y1 x2 y2]
     "Returns the slope of a line between two points: (x1, y1), (x2, y2)"
