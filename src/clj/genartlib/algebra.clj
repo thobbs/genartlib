@@ -36,7 +36,15 @@
   (defn lines-intersection-point [[start-x-1 start-y-1] [end-x-1 end-y-1]
                                   [start-x-2 start-y-2] [end-x-2 end-y-2]]
 
-    (let [slope-1 (slope start-x-1 start-y-1 end-x-1 end-y-1)
+    (let [[[start-x-1 start-y-1] [end-x-1 end-y-1]] (if (> end-x-1 start-x-1)
+                                                      [[start-x-1 start-y-1] [end-x-1 end-y-1]]
+                                                      [[end-x-1 end-y-1] [start-x-1 start-y-1]])
+
+          [[start-x-2 start-y-2] [end-x-2 end-y-2]] (if (> end-x-2 start-x-2)
+                                                      [[start-x-2 start-y-2] [end-x-2 end-y-2]]
+                                                      [[end-x-2 end-y-2] [start-x-2 start-y-2]])
+
+          slope-1 (slope start-x-1 start-y-1 end-x-1 end-y-1)
           y-intercept-1 (if (nil? slope-1)
                           nil
                           (y-intercept slope-1 start-x-1 start-y-1))
