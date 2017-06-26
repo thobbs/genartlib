@@ -1,4 +1,4 @@
-(defproject genartlib "0.1.11"
+(defproject genartlib "0.1.12"
   :description "Utilities and common tasks for generative artwork"
   :url "http://github.com/thobbs/genartlib"
   :license {:name "MIT"
@@ -8,4 +8,4 @@
                  [quil "2.4.0"]]
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
-  :aot [genartlib.geometry genartlib.util genartlib.random genartlib.algebra])
+  :aot [genartlib.geometry genartlib.util genartlib.random genartlib.algebra genartlib.curves])
