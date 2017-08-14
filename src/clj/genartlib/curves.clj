@@ -5,7 +5,7 @@
   (loop [points points
          new-points [(first points)]]
     (if (<= (count points) 1)
-      (concat new-points [(last points)])
+      (vec (concat new-points [(last points)]))
       (let [[start-x start-y] (first points)
             [end-x end-y] (second points)
             q-x (interpolate start-x end-x (+ 0.0 tightness))
