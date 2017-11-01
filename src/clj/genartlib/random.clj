@@ -18,17 +18,16 @@
    distribution with the given mean and variance"
   (range (int (abs-gauss mean variance))))
 
-(defn triangular [a b c]
-  "Returns a single sample from a Triangular distribution where:
-   - 'a' is the lower limit
-   - 'c' is the upper limit
-   - 'b' is the mode
-  "
-  (let [x (random 0.0 1.0)
-        transition-point (/ (- c a) (- b a))]
+(defn triangular [lower mode upper]
+  "Returns a single sample from a Triangular distribution"
+  (let [lower-extent     (- mode lower)
+        upper-extent     (- upper mode)
+        full-extent      (- upper lower)
+        x                (random 0.0 1.0)
+        transition-point (/ lower-extent full-extent)]
     (if (<= x transition-point)
-      (+ a (sqrt (* x (- b a) (- c a))))
-      (- b (sqrt (* (1 - x) (- b a) (- b c)))))))
+      (+ lower (sqrt (* x       full-extent lower-extent)))
+      (- upper (sqrt (* (- 1 x) full-extent upper-extent))))))
 
 (defn simple-triangular [b]
   "Like triangular, but assumes a = 0 and b = c"
