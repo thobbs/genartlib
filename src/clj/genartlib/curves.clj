@@ -31,8 +31,8 @@
    When points form a closed polygon, it's recommended that the start
    point be repeated at the end of points to avoid a gap."
 
-  ([points] (chaikin-curve [points 4 0.25]))
-  ([points depth] (chaikin-curve [points depth 0.25]))
+  ([points] (chaikin-curve points 4))
+  ([points depth] (chaikin-curve points depth 0.25))
 
   ([points depth tightness]
     (loop [depth depth
