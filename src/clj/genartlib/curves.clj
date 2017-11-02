@@ -2,15 +2,13 @@
   (:use [genartlib.algebra :only [interpolate]]))
 
 (defn- single-chaikin-step [points tightness]
-  (concat [(first points)]
-          (mapcat (fn [[[start-x start-y] [end-x end-y]]]
-                    (let [q-x (interpolate start-x end-x (+ 0.0 tightness))
-                          q-y (interpolate start-y end-y (+ 0.0 tightness))
-                          r-x (interpolate start-x end-x (- 1.0 tightness))
-                          r-y (interpolate start-y end-y (- 1.0 tightness))]
-                      [[q-x q-y] [r-x r-y]]))
-                  (partition 2 1 points))
-          [(last points)]))
+  (mapcat (fn [[[start-x start-y] [end-x end-y]]]
+            (let [q-x (interpolate start-x end-x (+ 0.0 tightness))
+                  q-y (interpolate start-y end-y (+ 0.0 tightness))
+                  r-x (interpolate start-x end-x (- 1.0 tightness))
+                  r-y (interpolate start-y end-y (- 1.0 tightness))]
+              [[q-x q-y] [r-x r-y]]))
+          (partition 2 1 points)))
 
 (defn chaikin-curve
 
