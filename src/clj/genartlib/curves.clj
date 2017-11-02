@@ -35,8 +35,4 @@
   ([points depth] (chaikin-curve points depth 0.25))
 
   ([points depth tightness]
-    (loop [depth depth
-           points points]
-      (if (zero? depth)
-        points
-        (recur (dec depth) (single-chaikin-step points tightness))))))
+   (nth (iterate #(single-chaikin-step % tightness) points) depth)))
