@@ -4,10 +4,11 @@
   (:use [quil.core :only [dist cos sin]])
   (:import [genartlib PolyUtils]))
 
-  (defn rotate-polygon [theta points]
+  (defn rotate-polygon
     "Rotates a polygon clockwise about its centroid.  The theta argument determines
      how the polygon is rotated.  `points` is a sequence of [x y] pairs that
      define the polygon"
+    [theta points]
     (if (zero? theta)
       points
       (let [xs (map first points)
@@ -24,10 +25,11 @@
                  [(+ x-offset x-centroid) (+ y-offset y-centroid)]))
                points))))
 
-  (defn polygon-contains-point? [x-verts y-verts test-x test-y]
+  (defn polygon-contains-point?
     "Returns true if a polygon contains the given point.  The polygon
      is defined by the first two arguments: a sequence of x values
      and a sequence of y values that define the polygon."
+    [x-verts y-verts test-x test-y]
     (PolyUtils/polygonContainsPoint (double-array x-verts) (double-array y-verts) (double test-x) (double test-y)))
 
   (defn shrink-polygon [points ratio]

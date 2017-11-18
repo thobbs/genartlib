@@ -22,8 +22,9 @@
     [seq elm]
     (not-any? #(= elm %) seq))
 
-  (defn between? [value end1 end2]
+  (defn between?
     "Returns true if value is between end1 and end2"
+    [value end1 end2]
     (and (>= value (min end1 end2))
          (<= value (max end1 end2))))
 
