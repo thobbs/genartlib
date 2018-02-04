@@ -2,17 +2,13 @@
   (:use [genartlib.algebra :only [interpolate]]))
 
 (defn- single-chaikin-step [points tightness]
-  (loop [points points
-         new-points [(first points)]]
-    (if (<= (count points) 1)
-      (vec (concat new-points [(last points)]))
-      (let [[start-x start-y] (first points)
-            [end-x end-y] (second points)
-            q-x (interpolate start-x end-x (+ 0.0 tightness))
-            q-y (interpolate start-y end-y (+ 0.0 tightness))
-            r-x (interpolate start-x end-x (- 1.0 tightness))
-            r-y (interpolate start-y end-y (- 1.0 tightness))]
-        (recur (rest points) (concat new-points [[q-x q-y] [r-x r-y]]))))))
+  (mapcat (fn [[[start-x start-y] [end-x end-y]]]
+            (let [q-x (interpolate start-x end-x (+ 0.0 tightness))
+                  q-y (interpolate start-y end-y (+ 0.0 tightness))
+                  r-x (interpolate start-x end-x (- 1.0 tightness))
+                  r-y (interpolate start-y end-y (- 1.0 tightness))]
+              [[q-x q-y] [r-x r-y]]))
+          (partition 2 1 points)))
 
 (defn chaikin-curve
 
@@ -31,12 +27,8 @@
    When points form a closed polygon, it's recommended that the start
    point be repeated at the end of points to avoid a gap."
 
-  ([points] (chaikin-curve [points 4 0.25]))
-  ([points depth] (chaikin-curve [points depth 0.25]))
+  ([points] (chaikin-curve points 4))
+  ([points depth] (chaikin-curve points depth 0.25))
 
   ([points depth tightness]
-    (loop [depth depth
-           points points]
-      (if (zero? depth)
-        points
-        (recur (dec depth) (single-chaikin-step points tightness))))))
+   (nth (iterate #(single-chaikin-step % tightness) points) depth)))
