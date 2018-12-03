@@ -1,6 +1,6 @@
 (ns genartlib.algebra
   (:use [genartlib.util :only [between?]])
-  (:use [quil.core :only [HALF-PI PI TWO-PI atan cos sin]]))
+  (:use [quil.core :only [HALF-PI PI TWO-PI atan cos sin dist]]))
 
   (defn avg
     "Returns the average of the arguments"
@@ -87,6 +87,11 @@
       nil
       (/ (- y2 y1) (- x2 x1))))
 
+  (defn point-slope
+    "Returns the slope of a line between two points: (x1, y1), (x2, y2)"
+    [[x1 y1] [x2 y2]]
+    (slope x1 y1 x2 y2))
+
   (defn y-intercept
     "Returns the y-intercept of a line with a given slope
      and one point on the line (x1, y1)"
@@ -110,6 +115,11 @@
                 angle (+ angle (if (neg? x-delta) PI 0))]
             (mod angle TWO-PI))))))
 
+  (defn point-angle
+    "Returns the angle between two points in radians"
+    [[x1 y1] [x2 y2]]
+    (angle x1 y1 x2 y2))
+
   (defn angular-coords
     "Returns an [x y] vector representing a point that is
      offset from a center ([center-x center-y]) by a given
@@ -117,3 +127,8 @@
     [center-x center-y theta magnitude]
     [(+ center-x (* magnitude (cos theta)))
      (+ center-y (* magnitude (sin theta)))])
+
+  (defn point-dist
+    "Returns the euclidean distance between two points"
+    [[x1 y1] [x2 y2]]
+    (dist x1 y1 x2 y2))
