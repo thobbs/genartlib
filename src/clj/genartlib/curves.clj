@@ -17,7 +17,7 @@
 
    The tightness parameter controls how sharp the corners will be,
    and should be a value between 0.0 and 0.5.  A value of 0.0 retains
-   full sharpness, and 0.5 creates maximum smoothness.
+   full sharpness, and 0.25 creates maximum smoothness.
 
    The depth parameter controls how many recursive steps will occur.
    The more steps, the smoother the curve is (assuming tightness is
@@ -32,3 +32,18 @@
 
   ([points depth tightness]
    (nth (iterate #(single-chaikin-step % tightness) points) depth)))
+
+(defn chaikin-curve-retain-ends
+  "Like chaikin-curve, but retains the first and last point in the
+   original `points` seq."
+  ([points] (chaikin-curve points 4))
+  ([points depth] (chaikin-curve points depth 0.25))
+  ([points depth tightness]
+   (if (<= (count points) 2)
+     points
+     (let [first-point (first points)
+           last-point (last points)
+           processed-points (chaikin-curve points depth tightness)]
+       (concat [first-point]
+               processed-points
+               [last-point])))))
