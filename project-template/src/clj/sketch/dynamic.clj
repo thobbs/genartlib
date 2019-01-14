@@ -45,7 +45,7 @@
           (println "Exception in draw function:" t)))
 
       (println "gen time:" (/ (- (System/currentTimeMillis) cur-time) 1000.0) "s")
-      (let [img-filename (str "img-" img-num "-" seed ".tif")]
+      (let [img-filename (str "img-" img-num "-" cur-time "-" seed ".tif")]
         (save img-filename)
         (println "done saving" img-filename)
 
