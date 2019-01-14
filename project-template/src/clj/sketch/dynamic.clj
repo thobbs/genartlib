@@ -38,8 +38,11 @@
 
       (println "setting seed to:" seed)
       (random-seed seed)
-      (background 40 2 98)
-      (actual-draw)
+
+      (try
+        (actual-draw)
+        (catch Throwable t
+          (println "Exception in draw function:" t)))
 
       (println "gen time:" (/ (- (System/currentTimeMillis) cur-time) 1000.0) "s")
       (let [img-filename (str "img-" img-num "-" seed ".tif")]
