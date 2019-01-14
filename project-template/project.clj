@@ -1,6 +1,6 @@
 (defproject sketch "0.1.0-SNAPSHOT"
   :description "A template for a sketch with Quil/Processing"
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.apache.commons/commons-math3 "3.3"]
                  [quil "2.7.1"]
                  [genartlib "0.1.17"] ; utility functions
