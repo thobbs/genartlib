@@ -33,8 +33,8 @@
 
       ; use "bash -c" to support my WSL setup
       (sh "bash" "-c" "mkdir versioned-code")
-      (let [code-filename (str "versioned-code/dynamic-" seed ".clj")]
-        (sh "bash" "-c" (str "cp src/clj/sketch/dynamic.clj " code-filename)))
+      (let [code-dirname (str "versioned-code/" seed)]
+        (sh "bash" "-c" (str "cp -R src/ " code-dirname)))
 
       (println "setting seed to:" seed)
       (random-seed seed)
