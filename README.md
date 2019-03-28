@@ -1,10 +1,14 @@
 # genartlib
 
-A Clojure library for creating generative artwork.
+A Clojure library with simple utilities for creating generative artwork.
 
 ## Usage
 
-TODO
+To install, add this to your dependencies in `project.clj`:
+
+```clojure
+[generatlib/genartlib "0.1.18"]
+```
 
 ## License
 
