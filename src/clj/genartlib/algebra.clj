@@ -1,6 +1,6 @@
 (ns genartlib.algebra
-  (:use [genartlib.util :only [between?]])
-  (:use [quil.core :only [HALF-PI PI TWO-PI atan cos sin dist]]))
+  (:require [genartlib.util :refer [between?]]
+            [quil.core :refer [HALF-PI PI TWO-PI atan cos sin dist]]))
 
   (defn avg
     "Returns the average of the arguments"

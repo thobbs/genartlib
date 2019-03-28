@@ -1,5 +1,5 @@
 (ns genartlib.util
-  (:use [quil.core :only [height width PI color-mode]]))
+  (:require [quil.core :refer [height width PI color-mode]]))
 
   (defn h
     "Returns a given percentage of the height Quil-specific."

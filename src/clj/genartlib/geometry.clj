@@ -1,7 +1,6 @@
 (ns genartlib.geometry
-  (:use [genartlib.algebra :only [angle avg interpolate]])
-  (:use [genartlib.util :only [between?]])
-  (:use [quil.core :only [dist cos sin]])
+  (:require [genartlib.algebra :refer [angle avg interpolate]]
+            [quil.core :refer [dist cos sin]])
   (:import [genartlib PolyUtils]))
 
   (defn rotate-polygon
