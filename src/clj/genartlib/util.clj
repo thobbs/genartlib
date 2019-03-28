@@ -42,10 +42,24 @@
     (and (>= value (min end1 end2))
          (<= value (max end1 end2))))
 
-  (defn set-color-mode []
+  (defn set-color-mode
+    "Set the color space to HSB, with the following ranges:
+     - Hue: [0, 360)
+     - Saturation: [0 100]
+     - Brightness: [0 100]
+     - Alpha: [0.0, 1.0]"
+    []
     (color-mode :hsb 360 100 100 1.0))
 
-  (defn enumerate [s]
+  (defn enumerate
+    "Returns a seq of tuples like [i v], where i enumerates
+     the position (starting from zero, of course) in the original
+     sequence and v is the corresponding value in the original
+     sequence. Example:
+
+      user=> (enumerate [:a :b :c])
+      ([0 :a] [1 :b] [2 :c])"
+    [s]
     (map-indexed vector s))
 
   (defn zip [seq1 seq2]
