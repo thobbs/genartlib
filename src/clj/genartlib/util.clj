@@ -21,8 +21,6 @@
     ([] (int (width)))
     ([percentage] (-> (width) (* percentage) int)))
 
-    ([] (int (h 1.0)))
-
   (defn pi [x]
     (* PI x))
 
