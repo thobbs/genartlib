@@ -2,12 +2,26 @@
   (:use [quil.core :only [height width PI color-mode]]))
 
   (defn h
+    "Returns a given percentage of the height Quil-specific."
     ([] (h 1.0))
     ([percentage] (* (height) percentage)))
 
   (defn w
+    "Returns a given percentage of the width. Quil-specific."
     ([] (w 1.0))
     ([percentage] (* (width) percentage)))
+
+  (defn h-int
+    "A version of `h` that truncates to an int value."
+    ([] (int (height)))
+    ([percentage] (-> (height) (* percentage) int)))
+
+  (defn w-int
+    "A version of `w` that truncates to an int value."
+    ([] (int (width)))
+    ([percentage] (-> (width) (* percentage) int)))
+
+    ([] (int (h 1.0)))
 
   (defn pi [x]
     (* PI x))
