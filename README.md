@@ -8,6 +8,6 @@ TODO
 
 ## License
 
-Copyright © 2016 Tyler Hobbs
+Copyright © Tyler Hobbs
 
 Distributed under the MIT License.
