@@ -1,6 +1,6 @@
 (ns genartlib.algebra
   (:require [genartlib.util :refer [between?]]
-            [quil.core :refer [HALF-PI PI TWO-PI atan cos sin dist]]))
+            [quil.core :refer [HALF-PI PI TWO-PI atan2 cos sin dist]]))
 
   (defn avg
     "Returns the average of the arguments"
@@ -98,22 +98,13 @@
     [slope x1 y1]
     (- y1 (* slope x1)))
 
-  (defn angle
-    "Returns the angle between two points in radians"
-    [x1 y1 x2 y2]
-    (let [x-delta (- x2 x1)
-          y-delta (- y2 y1)]
-      (if (zero? x-delta)
-        (if (> y2 y1)
-          HALF-PI
-          (+ HALF-PI PI))
-        (if (zero? y-delta)
-          (if (> x2 x1)
-            0
-            PI)
-          (let [angle (atan (/ y-delta x-delta))
-                angle (+ angle (if (neg? x-delta) PI 0))]
-            (mod angle TWO-PI))))))
+  (defn angle [x1 y1 x2 y2]
+    "Returns the angle between two points in radians. Values are between
+     0 and 2 * PI."
+    (let [a (atan2 (- y2 y1) (- x2 x1))]
+      (if (neg? a)
+        (+ a (* PI 2.0))
+        a)))
 
   (defn point-angle
     "Returns the angle between two points in radians"
