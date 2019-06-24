@@ -1,6 +1,6 @@
 (ns sketch.core
-  (:require [quil.core :as q])
-  (:require [sketch.dynamic :as dynamic])
+  (:require [quil.core :as q]
+            [sketch.dynamic :as dynamic])
   (:gen-class))
 
 (q/defsketch example
