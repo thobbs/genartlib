@@ -36,8 +36,8 @@
 (defn chaikin-curve-retain-ends
   "Like chaikin-curve, but retains the first and last point in the
    original `points` seq."
-  ([points] (chaikin-curve points 4))
-  ([points depth] (chaikin-curve points depth 0.25))
+  ([points] (chaikin-curve-retain-ends points 4))
+  ([points depth] (chaikin-curve-retain-ends points depth 0.25))
   ([points depth tightness]
    (if (<= (count points) 2)
      points
