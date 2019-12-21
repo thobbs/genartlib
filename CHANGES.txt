@@ -1,5 +1,7 @@
 0.1.19
 ======
+Released December 21, 2019
+
  * Improved README
  * Added genartlib.algebra/interpolate-multi
  * Added genartlib.plotter/sort-curves-for-plotting
