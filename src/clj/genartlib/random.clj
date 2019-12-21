@@ -71,8 +71,8 @@
   (nth items (int (random (count items)))))
 
 (defn weighted-choice
-  "Given a sequence of alternating item, weight arguments, chooses one of the
-   items with a probability equal to the weight.  Each weight should be
+  "Given a sequence of alternating item and weight arguments, chooses one of the
+   items with a probability equal to the weight. Each weight should be
    between 0.0 and 1.0, and all weights should sum to 1.0."
   [& items-and-weights]
   (assert (zero? (mod (count items-and-weights) 2)))
@@ -82,10 +82,7 @@
            remaining-items items-and-weights]
       (if (<= (count remaining-items) 2)
         (first remaining-items)
-        (let [; -- (println "remaining items:" remaining-items)
-              ; -- (assert (> (count remaining-items) 2))
-              ; -- (assert (not (nil? weight-seen)))
-              new-weight (second remaining-items)
+        (let [new-weight (second remaining-items)
               end-bound (+ weight-seen new-weight)]
           (if (between? r weight-seen end-bound)
             (first remaining-items)
