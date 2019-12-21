@@ -66,6 +66,10 @@ The following algebra-ish functions are defined:
 * weighted-choice (pick from a list of items, each with an assigned probability)
 * repeatable-shuffle (a version of shuffle that uses Processing's Random, in order to ensure repeatability with the same seed)
 
+### Plotter
+
+* sort-curves-for-plotting (sorts a seq of curves in order to minimize plotter travel distance)
+
 ### Utils
 
 * w and h (shorthand for expressing a length or position in terms of percentage of the image width or height - good for using a pseudo-vector approach to creating images)
