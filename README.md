@@ -74,6 +74,8 @@ The following algebra-ish functions are defined:
 * between? (is a value inside an inclusive range?)
 * enumerate (turns a seq of items into a seq like ([0 item-0] [1 item-1] [2 item-2] ...))
 * zip (combine two or more seqs into tuples)
+* snap-to (snap a value to a given window size, kind of like configurable rounding)
+* vec-remove (remove an item from a vector)
 
 
 ## License

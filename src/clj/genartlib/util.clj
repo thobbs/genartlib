@@ -62,3 +62,15 @@
 
   (defn zip [seq1 seq2]
     (map vector seq1 seq2))
+
+  (defn vec-remove
+    "Removes an element by index from a vector"
+    [v index]
+    (vec (concat (subvec v 0 index) (subvec v (inc index)))))
+
+  (defn snap-to
+    [v snap-width]
+    (let [remainder (rem v snap-width)]
+      (if (> remainder (* snap-width 0.5))
+        (+ v snap-width (* remainder -1.0))
+        (- v remainder))))
