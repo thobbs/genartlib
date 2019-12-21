@@ -1,5 +1,5 @@
 (ns genartlib.curves
-  (:require [genartlib.algebra :refer [interpolate]]))
+  (:require [genartlib.algebra :refer [interpolate point-dist]]))
 
 (defn- single-chaikin-step [points tightness]
   (mapcat (fn [[[start-x start-y] [end-x end-y]]]
@@ -11,7 +11,6 @@
           (partition 2 1 points)))
 
 (defn chaikin-curve
-
   "Forms a Chaikin curve from a seq of points, returning a new
    seq of points.
 
@@ -47,3 +46,55 @@
        (concat [first-point]
                processed-points
                [last-point])))))
+
+(defn curve-length
+  "Returns the total length of a curve"
+  [curve]
+  (->> curve
+       (partition 2 1)
+       (map #(apply point-dist %))
+       (reduce +)))
+
+(defn split-curve-with-step
+  [curve step-size]
+  (if (<= (count curve) 1)
+    curve
+    (loop [curve (rest curve)
+           segments (transient [])
+           current-segment (transient [(first curve)])
+           current-length 0
+           prev-point (first curve)]
+
+      (if (empty? curve)
+        (if (<= (count current-segment) 1)
+          (persistent! segments)
+          (persistent! (conj! segments (persistent! current-segment))))
+
+        (let [new-point (first curve)
+              new-dist (point-dist prev-point new-point)
+              new-length (+ current-length new-dist)]
+          (if (< new-length step-size)
+            (recur (rest curve) segments (conj! current-segment new-point) new-length new-point)
+            (let [dist-needed (- step-size current-length)
+                  t (/ dist-needed new-dist)
+                  x (interpolate (first prev-point) (first new-point) t)
+                  y (interpolate (second prev-point) (second new-point) t)]
+              (if (= 1 (count curve))
+                ; we're done, cleanup and return
+                (persistent! (conj! segments (persistent! (conj! current-segment [x y]))))
+
+                ; we need to split
+                (let [finalized-segment (persistent! (conj! current-segment [x y]))]
+                  (recur curve
+                         (conj! segments finalized-segment)
+                         (transient [[x y]])
+                         0
+                         [x y]))))))))))
+
+(defn split-curve-into-parts
+  [curve num-parts]
+  (if (<= num-parts 1)
+    curve
+    (let [total-length (curve-length curve)
+          segment-length (/ total-length num-parts)]
+      (split-curve-with-step curve segment-length))))

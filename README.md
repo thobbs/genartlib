@@ -1,10 +1,11 @@
 # genartlib
 
+<img src="dev-resources/ectogenesis-small.jpg" alt="Ectogenesis" title="Ectogenesis" align="right" width="250"/>
+
 A Clojure library with simple utilities for creating generative artwork.
 
 This library is built around [Quil](https://github.com/quil/quil), a Clojure wrapper around the [Processing](https://processing.org) framework. However, most of the functions are just mathematical utilies that could be used idependently.
 
-<img src="dev-resources/ectogenesis-small.jpg" alt="Ectogenesis" title="Ectogenesis" align="right" width="250"/>
 
 To see and read about my artwork, visit [tylerxhobbs.com](https://tylerxhobbs.com) or follow me on [Instagram](https://instagram.com/tylerxhobbs) or [Twitter](https://twitter.com/tylerxhobbs).
 
@@ -30,7 +31,7 @@ I also wrote a bit about [my development setup and how I use it](https://tylerxh
 
 The following algebra-ish functions are defined:
 * avg
-* interpolate (linear interpolation)
+* interpolate / interpolate-multi (linear interpolation)
 * rescale (map from one range to another)
 * line-intersection (find the intersection of two lines)
 * lines-intersection-point (another way to find line intersections)
@@ -50,6 +51,8 @@ The following algebra-ish functions are defined:
 
 * chaikin-curve (a curve-smoothing algorithm)
 * chaikin-curve-retain-ends (a variation that preserves the original end points)
+* split-curve-by-step (break up a curve into chunks with the given length)
+* split-curve-into-parts (break up a curve into chunks with equal length, given a number of parts to have)
 
 ### Random
 
