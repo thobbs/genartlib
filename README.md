@@ -16,7 +16,7 @@ To see and read about my artwork, visit [tylerxhobbs.com](https://tylerxhobbs.co
 To install, add this to your dependencies in `project.clj`:
 
 ```clojure
-[genartlib/genartlib "0.1.18"]
+[genartlib "0.1.19"]
 ```
 
 ## Contents
