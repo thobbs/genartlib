@@ -1,0 +1,9 @@
+0.1.19
+======
+ * Improved README
+ * Added genartlib.algebra/interpolate-multi
+ * Added genartlib.plotter/sort-curves-for-plotting
+ * Added genartlib.curves/curve-length
+ * Added genartlib.curves/split-curve-with-step
+ * Added genartlib.curves/split-curve-into-parts
+ * Added genartlib.util/snap-to
