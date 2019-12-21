@@ -13,6 +13,16 @@
     [start finish t]
     (+ (* (- 1.0 t) start) (* t finish)))
 
+  (defn interpolate-multi
+    "Interpolates between two multi-dimensional points at t, where
+     t is between 0.0 and 1.0"
+    [start-point finish-point t]
+    (map
+      (fn [a b]
+        (interpolate a b t))
+      start-point
+      finish-point))
+
   (defn rescale
     "Rescales value from range [old-min, old-max] to [new-min, new-max]"
     [value old-min old-max new-min new-max]
