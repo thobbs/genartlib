@@ -1,5 +1,7 @@
 # genartlib
 
+[![Clojars Project](https://img.shields.io/clojars/v/genartlib.svg)](https://clojars.org/genartlib)
+
 <img src="dev-resources/ectogenesis-small.jpg" alt="Ectogenesis" title="Ectogenesis" align="right" width="250"/>
 
 A Clojure library with simple utilities for creating generative artwork.
