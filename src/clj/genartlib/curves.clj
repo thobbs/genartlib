@@ -56,40 +56,37 @@
        (reduce +)))
 
 (defn split-curve-with-step
-  [curve step-size]
-  (if (<= (count curve) 1)
-    curve
-    (loop [curve (rest curve)
+  [curve-to-split step-size]
+  (if (<= (count curve-to-split) 1)
+    curve-to-split
+    (loop [curve (rest curve-to-split)
            segments (transient [])
-           current-segment (transient [(first curve)])
+           current-segment (transient [(first curve-to-split)])
            current-length 0
-           prev-point (first curve)]
+           prev-point (first curve-to-split)]
 
       (if (empty? curve)
-        (if (<= (count current-segment) 1)
-          (persistent! segments)
-          (persistent! (conj! segments (persistent! current-segment))))
+        (persistent! (conj! segments (persistent! current-segment)))
 
         (let [new-point (first curve)
               new-dist (point-dist prev-point new-point)
               new-length (+ current-length new-dist)]
           (if (< new-length step-size)
             (recur (rest curve) segments (conj! current-segment new-point) new-length new-point)
+
+            ; we need to split
             (let [dist-needed (- step-size current-length)
                   t (/ dist-needed new-dist)
                   x (interpolate (first prev-point) (first new-point) t)
-                  y (interpolate (second prev-point) (second new-point) t)]
-              (if (= 1 (count curve))
-                ; we're done, cleanup and return
-                (persistent! (conj! segments (persistent! (conj! current-segment [x y]))))
+                  y (interpolate (second prev-point) (second new-point) t)
 
-                ; we need to split
-                (let [finalized-segment (persistent! (conj! current-segment [x y]))]
-                  (recur curve
-                         (conj! segments finalized-segment)
-                         (transient [[x y]])
-                         0
-                         [x y]))))))))))
+                  finalized-segment (persistent! (conj! current-segment [x y]))]
+
+              (recur curve
+                     (conj! segments finalized-segment)
+                     (transient [[x y]])
+                     0
+                     [x y]))))))))
 
 (defn split-curve-into-parts
   [curve num-parts]
