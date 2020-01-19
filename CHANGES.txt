@@ -1,3 +1,9 @@
+0.1.20
+======
+In Progress
+
+* Fix split-curve-with-step boundary conditions
+
 0.1.19
 ======
 Released December 21, 2019
@@ -9,3 +15,4 @@ Released December 21, 2019
  * Added genartlib.curves/split-curve-with-step
  * Added genartlib.curves/split-curve-into-parts
  * Added genartlib.util/snap-to
+ * Added genartlib.util/vec-remove

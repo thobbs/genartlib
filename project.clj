@@ -6,6 +6,8 @@
   :dependencies [[org.clojure/clojure "1.10.0"]
                  [org.apache.commons/commons-math3 "3.3"]
                  [quil "2.7.1"]]
+  :deploy-repositories [["releases" {:sign-releases false :url "https://clojars.org"}]
+                        ["snapshots" {:sign-releases false :url "https://clojars.org"}]]
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
   :aot [genartlib.geometry genartlib.util genartlib.random genartlib.algebra genartlib.curves genartlib.plotter])
