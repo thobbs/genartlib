@@ -4,6 +4,7 @@ Released March 22, 2020
 
 * Fix split-curve-with-step boundary conditions
 * Upgrade Quil dependency to 3.1.0, Processing to 3.5.3
+* Add tests for algebra, geometry, and util namespaces
 
 0.1.19
 ======
