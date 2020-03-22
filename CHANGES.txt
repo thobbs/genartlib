@@ -1,6 +1,6 @@
 0.1.20
 ======
-In Progress
+Released March 22, 2020
 
 * Fix split-curve-with-step boundary conditions
 * Upgrade Quil dependency to 3.1.0, Processing to 3.5.3

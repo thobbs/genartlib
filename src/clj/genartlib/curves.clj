@@ -1,5 +1,6 @@
 (ns genartlib.curves
-  (:require [genartlib.algebra :refer [interpolate point-dist]]))
+  (:require
+    [genartlib.algebra :refer [interpolate point-dist]]))
 
 (defn- single-chaikin-step [points tightness]
   (mapcat (fn [[[start-x start-y] [end-x end-y]]]

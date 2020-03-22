@@ -1,12 +1,10 @@
 (ns sketch.dynamic
   (:require [clojure.java.shell :refer [sh]]
-            [clojure.pprint :refer [pprint]]
             ; [genartlib.algebra :refer :all]
             ; [genartlib.curves :refer :all]
             ; [genartlib.geometry :refer :all]
             ; [genartlib.random :refer :all]
             [genartlib.util :refer [set-color-mode w h]]
-            [quil.applet :refer [current-applet]]
             [quil.core :as q])
   (:import [sketch Example]
            [com.seisw.util.geom PolySimple PolyDefault Clip Point2D]))

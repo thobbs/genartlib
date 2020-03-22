@@ -1,5 +1,6 @@
 (ns genartlib.plotter
-  (:require [quil.core :as q]))
+  (:require
+    [quil.core :as q]))
 
 (defn ^:private get-closest-curve
   [[x y] curves]
