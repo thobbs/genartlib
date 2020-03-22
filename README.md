@@ -1,6 +1,7 @@
 # genartlib
 
 [![Clojars Project](https://img.shields.io/clojars/v/genartlib.svg)](https://clojars.org/genartlib)
+[![cljdoc badge](https://cljdoc.org/badge/genartlib/genartlib)](https://cljdoc.org/d/genartlib/genartlib/CURRENT)
 
 <img src="dev-resources/ectogenesis-small.jpg" alt="Ectogenesis" title="Ectogenesis" align="right" width="250"/>
 
