@@ -61,8 +61,9 @@
   [s]
   (map-indexed vector s))
 
-(defn zip [seq1 seq2]
-  (map vector seq1 seq2))
+(defn zip
+  [& sequences]
+  (apply map vector sequences))
 
 (defn vec-remove
   "Removes an element by index from a vector"
@@ -72,6 +73,6 @@
 (defn snap-to
   [v snap-width]
   (let [remainder (rem v snap-width)]
-    (if (> remainder (* snap-width 0.5))
+    (if (>= remainder (* snap-width 0.5))
       (+ v snap-width (* remainder -1.0))
       (- v remainder))))

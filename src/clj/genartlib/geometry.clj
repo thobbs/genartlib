@@ -33,7 +33,11 @@
   [x-verts y-verts test-x test-y]
   (PolyUtils/polygonContainsPoint (double-array x-verts) (double-array y-verts) (double test-x) (double test-y)))
 
-(defn shrink-polygon [points ratio]
+(defn shrink-polygon
+  "Pulls all points in a polygon towards the centroid. The provided
+   ratio controls how far the points are pulled, with 0 producing no
+   change and 1.0 pulling all the way to the centroid."
+  [points ratio]
   (let [x-points (map first points)
         y-points (map second points)
 
