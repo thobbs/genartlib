@@ -22,6 +22,8 @@ To install, add this to your dependencies in `project.clj`:
 
 ## Contents
 
+View the [API Docs](https://cljdoc.org/d/genartlib/genartlib/CURRENT).
+
 The genartlib library has the following tools:
 
 ### Project Template
