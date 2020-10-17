@@ -10,4 +10,4 @@
                         ["snapshots" {:sign-releases false :url "https://clojars.org"}]]
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
-  :aot [genartlib.geometry genartlib.util genartlib.random genartlib.algebra genartlib.curves genartlib.plotter])
+  :aot :all)
