@@ -14,8 +14,12 @@
     points
     (let [xs (map first points)
           ys (map second points)
-          x-centroid (/ (apply + xs) (count xs))
-          y-centroid (/ (apply + ys) (count ys))
+          min-x (apply min xs)
+          max-x (apply max xs)
+          min-y (apply min ys)
+          max-y (apply max ys)
+          x-centroid (/ (+ min-x max-x) 2.0)
+          y-centroid (/ (+ min-y max-y) 2.0)
           points (map vector xs ys)]
       (map (fn [[x y]]
              (let [current-angle (angle x-centroid y-centroid x y)
