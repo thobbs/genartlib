@@ -5,9 +5,8 @@
             ; [genartlib.geometry :refer :all]
             ; [genartlib.random :refer :all]
             [genartlib.util :refer [set-color-mode w h]]
-            [quil.core :as q])
-  (:import [sketch Example]
-           [com.seisw.util.geom PolySimple PolyDefault Clip Point2D]))
+            [quil.core :as q]))
+  ; (:import [sketch Example]))
 
 (defn setup []
   (q/smooth)
