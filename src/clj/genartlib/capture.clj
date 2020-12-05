@@ -1,9 +1,12 @@
 (ns genartlib.capture
-  (:require [clojure.pprint :refer [pprint]]
+  (:require [clojure.java.io :refer [writer]]
+            [clojure.pprint :refer [pprint]]
+            [clojure.string :as s]
+            [genartlib.util :refer [w h]]
             [quil.core :as q]))
 
-(defmacro with-command-capture
-  [output-file & body]
+(defmacro capture-helper
+  [& body]
   `(let [full-width# (w 1.0)
          full-height# (h 1.0)
          commands# (atom [])
@@ -96,8 +99,47 @@
                                                       :color color#}])
                                   (apply og-background# color#))]
        ~@body)
+     @commands#))
+
+(defn with-command-capture
+  [output-file & body]
+  `(let [commands# (capture-helper ~@body)]
      (println "Going to save commands to" ~output-file)
-     (pprint @commands# (clojure.java.io/writer ~output-file))))
+     (pprint commands# (clojure.java.io/writer ~output-file))))
+
+(def svg-opening
+  "<svg xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\" width=\"%s\" height=\"%s\" viewBox=\"0 0 %d %d\">\n  <g fill=\"none\" stroke=\"#000000\" stroke-width=\"1\">\n")
+
+(defn make-path
+  [points]
+  (->> points
+       (map #(s/join "," %))
+       (s/join " ")
+       (format "    <path d=\"M %s\"/>\n")))
+
+(defmacro with-plotter-svg-capture
+  [output-file width height & body]
+  `(let [commands# (capture-helper ~@body)]
+     (println "Going to write SVG at" ~output-file)
+     (with-open [wrt# (writer ~output-file)]
+       (.write wrt# (format svg-opening ~width ~height (int (w)) (int (h))))
+       (doseq [cmd# commands#]
+         (try
+           (case (:type cmd#)
+             :line
+             (when (:stroke cmd#)
+               (.write wrt# (make-path [[(w (:start-x cmd#)) (h (:start-y cmd#))]
+                                        [(w (:end-x cmd#)) (h (:end-y cmd#))]])))
+
+             :shape
+             (when (:stroke cmd#)
+               (.write wrt# (make-path (for [p# (:points cmd#)]
+                                         [(w (:x p#)) (h (:y p#))]))))
+
+             ; else
+             nil)))
+
+       (.write wrt# "  </g>\n</svg>\n"))))
 
 (defn command-replay
   ([cmds] (command-replay cmds (w) (h) 0 0))
