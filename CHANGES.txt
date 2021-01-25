@@ -1,3 +1,10 @@
+0.1.22
+======
+Released January 25, 2021
+
+* Fix genartlib.curves/curve-interpolation when the curve has exactly two points
+* Add workaround fn for bug in Axidraw pausing
+
 0.1.21
 ======
 Released December 5, 2020
