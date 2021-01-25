@@ -1,3 +1,14 @@
+0.1.21
+======
+Released December 5, 2020
+
+* Add command capture, replay, and SVG writing in new genartlib.capture module
+* Add basic tests for curves functions
+* Add genartlib.curves/line-simplification
+* Add genartlib.curves/curve-interpolation
+* Better centroid calculation for poly rotation
+* Remove old imports from project template
+
 0.1.20
 ======
 Released March 22, 2020
