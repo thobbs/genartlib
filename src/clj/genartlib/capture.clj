@@ -141,6 +141,33 @@
 
        (.write wrt# "  </g>\n</svg>\n"))))
 
+(defmacro with-plotter-svg-capture-axidraw-workaround
+  "A temporary workaround for an axidraw bug that prevents pausing the plotter
+   in the middle of a multi-segment curve"
+  [output-file width height & body]
+  `(let [commands# (capture-helper ~@body)]
+     (println "Going to write SVG at" ~output-file)
+     (with-open [wrt# (writer ~output-file)]
+       (.write wrt# (format svg-opening ~width ~height (int (w)) (int (h))))
+       (doseq [cmd# commands#]
+         (try
+           (case (:type cmd#)
+             :line
+             (when (:stroke cmd#)
+               (.write wrt# (make-path [[(w (:start-x cmd#)) (h (:start-y cmd#))]
+                                        [(w (:end-x cmd#)) (h (:end-y cmd#))]])))
+
+             :shape
+             (when (:stroke cmd#)
+               (doseq [[p1# p2#] (partition 2 1 (:points cmd#))]
+                 (.write wrt# (make-path [[(w (:x p1#)) (h (:y p1#))]
+                                          [(w (:x p2#)) (h (:y p2#))]]))))
+
+             ; else
+             nil)))
+
+       (.write wrt# "  </g>\n</svg>\n"))))
+
 (defn command-replay
   ([cmds] (command-replay cmds (w) (h) 0 0))
   ([cmds full-width full-height] (command-replay cmds full-width full-height 0 0))
