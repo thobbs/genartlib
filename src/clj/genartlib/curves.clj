@@ -115,10 +115,8 @@
 
       (= 2 (count curve))
       (let [mid-x (interpolate (first first-point) (first last-point) t)
-            mid-y (interpolate (second first-point) (second last-point) t)
-            mid-point [mid-x mid-y]]
-        [[first-point mid-point]
-         [mid-point last-point]])
+            mid-y (interpolate (second first-point) (second last-point) t)]
+        [mid-x mid-y])
 
       :else
       (let [total-len (or curve-len (curve-length curve))
