@@ -101,7 +101,7 @@
        ~@body)
      @commands#))
 
-(defn with-command-capture
+(defmacro with-command-capture
   [output-file & body]
   `(let [commands# (capture-helper ~@body)]
      (println "Going to save commands to" ~output-file)
@@ -150,21 +150,20 @@
      (with-open [wrt# (writer ~output-file)]
        (.write wrt# (format svg-opening ~width ~height (int (w)) (int (h))))
        (doseq [cmd# commands#]
-         (try
-           (case (:type cmd#)
-             :line
-             (when (:stroke cmd#)
-               (.write wrt# (make-path [[(w (:start-x cmd#)) (h (:start-y cmd#))]
-                                        [(w (:end-x cmd#)) (h (:end-y cmd#))]])))
+         (case (:type cmd#)
+           :line
+           (when (:stroke cmd#)
+             (.write wrt# (make-path [[(w (:start-x cmd#)) (h (:start-y cmd#))]
+                                      [(w (:end-x cmd#)) (h (:end-y cmd#))]])))
 
-             :shape
-             (when (:stroke cmd#)
-               (doseq [[p1# p2#] (partition 2 1 (:points cmd#))]
-                 (.write wrt# (make-path [[(w (:x p1#)) (h (:y p1#))]
-                                          [(w (:x p2#)) (h (:y p2#))]]))))
+           :shape
+           (when (:stroke cmd#)
+             (doseq [[p1# p2#] (partition 2 1 (:points cmd#))]
+               (.write wrt# (make-path [[(w (:x p1#)) (h (:y p1#))]
+                                        [(w (:x p2#)) (h (:y p2#))]]))))
 
-             ; else
-             nil)))
+           ; else
+           nil))
 
        (.write wrt# "  </g>\n</svg>\n"))))
 
