@@ -10,3 +10,4 @@ pom.xml.asc
 *.swp
 *.swo
 *~
+/.creds
