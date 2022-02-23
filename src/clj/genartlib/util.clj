@@ -76,3 +76,12 @@
     (if (>= remainder (* snap-width 0.5))
       (+ v snap-width (* remainder -1.0))
       (- v remainder))))
+
+(defn distinct-key
+  "Given a function f to uniquely identify items, extracts
+   all of the distinct items in a collection."
+  [f coll]
+  (->> coll
+       (group-by f)
+       vals
+       (map first)))
