@@ -39,8 +39,8 @@
 
 (defn shrink-polygon
   "Pulls all points in a polygon towards the centroid. The provided
-   ratio controls how far the points are pulled, with 0 producing no
-   change and 1.0 pulling all the way to the centroid."
+   ratio controls how far the points are pulled, with 1.0 producing no
+   change and 0.0 pulling all the way to the centroid."
   [points ratio]
   (let [x-points (map first points)
         y-points (map second points)
