@@ -1,7 +1,7 @@
 (ns genartlib.algebra
   (:require
     [genartlib.util :refer [between?]]
-    [quil.core :refer [HALF-PI PI TWO-PI atan2 cos sin dist]]))
+    [quil.core :refer [PI atan2 cos sin dist sqrt abs]]))
 
 (defn avg
   "Returns the average of the arguments"
@@ -109,9 +109,10 @@
   [slope x1 y1]
   (- y1 (* slope x1)))
 
-(defn angle [x1 y1 x2 y2]
+(defn angle
   "Returns the angle between two points in radians. Values are between
    0 and 2 * PI."
+  [x1 y1 x2 y2]
   (let [a (atan2 (- y2 y1) (- x2 x1))]
     (if (neg? a)
       (+ a (* PI 2.0))
@@ -134,3 +135,17 @@
   "Returns the euclidean distance between two points"
   [[x1 y1] [x2 y2]]
   (dist x1 y1 x2 y2))
+
+(defn point-to-line-dist
+  "[x1 y1] and [x2 y2] define the line, [x0 y0] defines
+   the point"
+  [[x1 y1] [x2 y2] [x0 y0]]
+  (let [denom (sqrt (+ (Math/pow (- y2 y1) 2)
+                       (Math/pow (- x2 x1) 2)))]
+    (if (zero? denom)
+      0
+      (/ (abs (+ (*  1 (* (- y2 y1) x0))
+                 (* -1 (* (- x2 x1) y0))
+                 (*  1 (* x2 y1))
+                 (* -1 (* y2 x1))))
+         denom))))
