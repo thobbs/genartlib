@@ -1,7 +1,7 @@
 (ns genartlib.curves
   (:require
-    [genartlib.algebra :refer [interpolate point-dist]]
-    [genartlib.util :refer [enumerate]]))
+    [genartlib.algebra :refer [interpolate point-dist lines-intersection-point]]
+    [genartlib.util :refer [enumerate w h]]))
 
 (defn ^:private single-chaikin-step
   [points tightness]
@@ -174,3 +174,97 @@
                                min-tolerated-dist)
           (drop 1 (line-simplification (drop max-index points)
                                        min-tolerated-dist)))))))
+(defn ^:private in-bounds?
+  [[x y]]
+  (and (>= x 0)
+       (< x (w))
+       (>= y 0)
+       (< y (h))))
+
+(defn trim-curve-to-bounds
+  "Returns a seq of sub-curves that are entirely within the bounds of the image"
+  [points]
+  (let [border-lines [[[0 0] [(w) 0]]
+                      [[(w) 0] [(w) (h)]]
+                      [[(w) (h)] [0 (h)]]
+                      [[0 (h)] [0 0]]]]
+    (loop [points (rest points)
+           segments []
+           current-segment (if (in-bounds? (first points)) [(first points)] [])
+           was-in-bounds? (in-bounds? (first points))
+           prev-point (first points)]
+
+      (if (empty? points)
+        (let [final-segments (conj segments current-segment)]
+          (vec
+            (filter
+              #(>= (count %) 2)
+              final-segments)))
+
+        (let [next-point (first points)
+              next-in-bounds? (in-bounds? next-point)]
+
+          (cond
+            ; still in bounds
+            (and was-in-bounds? next-in-bounds?)
+            (recur (rest points) segments (concat current-segment [next-point]) true next-point)
+
+            ; still out of bounds
+            (and (not was-in-bounds?) (not next-in-bounds?))
+            (recur (rest points) segments current-segment false next-point)
+
+            ; entering the bounds
+            (and (not was-in-bounds?) next-in-bounds?)
+            (let [inter (some
+                          (fn [[p1 p2]]
+                            (lines-intersection-point
+                              prev-point next-point
+                              p1 p2))
+                          border-lines)]
+              (recur (rest points) segments [inter next-point] true next-point))
+
+            ; leaving the bounds
+            (and was-in-bounds? (not next-in-bounds?))
+            (let [inter (some
+                          (fn [[p1 p2]]
+                            (lines-intersection-point
+                              prev-point next-point
+                              p1 p2))
+                          border-lines)]
+              (recur (rest points) (conj segments (concat current-segment [inter])) [] false next-point))))))))
+
+(defn trim-curve-start
+  "Removes the specified length from the start of a curve. If the specified length
+   is longer than the entire curve length, an empty vector is returned."
+  [points trim-length]
+  (if (<= (count points) 1)
+    []
+    (loop [remaining-points (rest points)
+           current-length 0
+           prev-point (first points)]
+
+      (if (empty? remaining-points)
+        []
+
+        (let [new-point (first remaining-points)
+              new-dist (point-dist prev-point new-point)
+              new-length (+ current-length new-dist)]
+          (if (< new-length trim-length)
+            (recur (rest remaining-points) new-length new-point)
+
+            ; we need to split
+            (let [dist-needed (- trim-length current-length)
+                  t (/ dist-needed new-dist)
+                  x (interpolate (first prev-point) (first new-point) t)
+                  y (interpolate (second prev-point) (second new-point) t)]
+
+              (concat [[x y]] remaining-points))))))))
+
+(defn trim-curve-end
+  "Removes the specified length from the end of a curve. If the specified length
+   is longer than the entire curve length, an empty vector is returned."
+  [points trim-length]
+  (-> points
+      (reverse)
+      (trim-curve-start trim-length)
+      (reverse)))
