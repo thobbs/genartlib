@@ -1,6 +1,7 @@
 (ns genartlib.random
   (:require [genartlib.util :refer [between?]]
-            [quil.core :refer [random-gaussian cos sin abs random sqrt TWO-PI]])
+            [quil.core :refer [random-gaussian cos sin abs random sqrt TWO-PI]]
+            [genartlib.algebra :as a])
   (:import [org.apache.commons.math3.distribution ParetoDistribution]))
 
 (defn gauss
@@ -50,15 +51,12 @@
    shape."
   [scale shape]
   (.sample (ParetoDistribution. scale shape)))
-
 (defn random-point-in-circle
   "Picks a random point in a circle with a given center and radius"
   [x y radius]
   (let [theta (random 0 TWO-PI)
-        r (simple-triangular radius)
-        x-offset (* r (cos theta))
-        y-offset (* r (sin theta))]
-    [(+ x x-offset) (+ y y-offset)]))
+        r (simple-triangular radius)]
+    (a/angular-coords x y theta r)))
 
 (defn odds
   "Returns true with probability 'chance', where change is between 0 and 1.0"
