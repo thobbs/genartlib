@@ -1,7 +1,7 @@
 (ns genartlib.random
   (:require [genartlib.util :refer [between?]]
-            [quil.core :refer [random-gaussian cos sin abs random sqrt TWO-PI]]
-            [genartlib.algebra :as a])
+            [quil.core :refer [random-gaussian abs random sqrt TWO-PI]]
+            [genartlib.algebra :refer [angular-coords]])
   (:import [org.apache.commons.math3.distribution ParetoDistribution]))
 
 (defn gauss
@@ -56,7 +56,7 @@
   [x y radius]
   (let [theta (random 0 TWO-PI)
         r (simple-triangular radius)]
-    (a/angular-coords x y theta r)))
+    (angular-coords x y theta r)))
 
 (defn odds
   "Returns true with probability 'chance', where change is between 0 and 1.0"
