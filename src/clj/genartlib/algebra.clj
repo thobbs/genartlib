@@ -11,11 +11,14 @@
 (declare rescale)
 
 (defn interpolate
-  "Interpolates a point between [start, finish] at point t, where
-   t is between 0.0 and 1.0. "
+  "Interpolates a point between [start, finish] at point t, where t is between
+  0.0 and 1.0. When exponent or tanh-factor options are supplied, an exponential
+  or s-curve interpolation is used, instead of linear interpolation. Exponent
+  should always be positive."
   ([start finish t]
    (+ (* (- 1.0 t) start) (* t finish)))
   ([{:keys [exponent tanh-factor]} start finish t]
+   (when exponent (assert (pos? exponent))) ;; Exponent should always be > 0
    (cond
      exponent (let [lo (pow 1 exponent)
                     hi (pow 2 exponent)]
