@@ -1,18 +1,29 @@
 (ns genartlib.algebra
   (:require
-    [genartlib.util :refer [between?]]
-    [quil.core :refer [PI atan2 cos sin dist sqrt abs]]))
+   [genartlib.util :refer [between?]]
+   [quil.core :refer [PI atan2 cos sin dist sqrt abs pow]]))
 
 (defn avg
   "Returns the average of the arguments"
   [& values]
   (/ (apply + values) (count values)))
 
+(declare rescale)
+
 (defn interpolate
   "Interpolates a point between [start, finish] at point t, where
-   t is between 0.0 and 1.0"
-  [start finish t]
-  (+ (* (- 1.0 t) start) (* t finish)))
+   t is between 0.0 and 1.0. "
+  ([start finish t]
+   (+ (* (- 1.0 t) start) (* t finish)))
+  ([{:keys [exponent tanh-factor]} start finish t]
+   (cond
+     exponent (let [lo (pow 1 exponent)
+                    hi (pow 2 exponent)]
+                (-> t inc (pow exponent) (rescale lo hi start finish)))
+     tanh-factor (cond-> (Math/tanh (* t tanh-factor))
+                   (neg? tanh-factor) inc
+                   :always (rescale 0 1 start finish))
+     :else (interpolate start finish t))))
 
 (defn interpolate-multi
   "Interpolates between two multi-dimensional points at t, where
