@@ -21,9 +21,9 @@
   (is (= 5.0 (a/interpolate 10.0 0.0 0.5)))
   (is (= 0.0 (a/interpolate 10.0 0.0 1.0)))
 
-  (is (= 41.66666666666667 (a/interpolate {:exponent 2} 0 100 0.5)))
+  (is (= 41.66666666666667 (a/interpolate {:exponent 2} 0 100 0.5))) ;; Interpolate along a exponential curve of exponent 2
   (is (= 54.25822558944361 (a/interpolate {:exponent 0.5} 0 100 0.5)))
-  (is (= 75.50813375962908 (a/interpolate {:tanh-factor -0.5} 0 100 0.5)))
+  (is (= 75.50813375962908 (a/interpolate {:tanh-factor -0.5} 0 100 0.5))) ;; Interpolate along a 'S' curve of factor -0.5
   (is (= 63.51489523872873 (a/interpolate {:tanh-factor 1.5} 0 100 0.5))))
 
 (deftest rescale-test
