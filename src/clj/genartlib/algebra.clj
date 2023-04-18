@@ -8,7 +8,13 @@
   [& values]
   (/ (apply + values) (count values)))
 
-(declare rescale)
+(defn rescale
+  "Rescales value from range [old-min, old-max] to [new-min, new-max]"
+  [value old-min old-max new-min new-max]
+  (let [old-spread (- old-max old-min)
+        new-spread (- new-max new-min)]
+    (+ (* (- value old-min) (/ new-spread old-spread))
+       new-min)))
 
 (defn interpolate
   "Interpolates a point between [start, finish] at point t, where t is between
@@ -33,18 +39,10 @@
    t is between 0.0 and 1.0"
   [start-point finish-point t]
   (map
-    (fn [a b]
-      (interpolate a b t))
-    start-point
-    finish-point))
-
-(defn rescale
-  "Rescales value from range [old-min, old-max] to [new-min, new-max]"
-  [value old-min old-max new-min new-max]
-  (let [old-spread (- old-max old-min)
-        new-spread (- new-max new-min)]
-    (+ (* (- value old-min) (/ new-spread old-spread))
-       new-min)))
+   (fn [a b]
+     (interpolate a b t))
+   start-point
+   finish-point))
 
 (defn line-intersection
   "Finds the intersection of two lines.  Each line argument is a vector
