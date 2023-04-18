@@ -35,14 +35,21 @@
      :else (interpolate start finish t))))
 
 (defn interpolate-multi
-  "Interpolates between two multi-dimensional points at t, where
-   t is between 0.0 and 1.0"
-  [start-point finish-point t]
-  (map
-   (fn [a b]
-     (interpolate a b t))
-   start-point
-   finish-point))
+  "Interpolates between two multi-dimensional points at t, where t is between
+  0.0 and 1.0. Also accepts curve props like interpolate."
+  ([start-point finish-point t]
+   (map
+    (fn [a b]
+      (interpolate a b t))
+    start-point
+    finish-point))
+  ([props start-point finish-point t]
+   (let [interpolate-fn (partial interpolate props)]
+     (map
+      (fn [a b]
+        (interpolate-fn a b t))
+      start-point
+      finish-point))))
 
 (defn line-intersection
   "Finds the intersection of two lines.  Each line argument is a vector
