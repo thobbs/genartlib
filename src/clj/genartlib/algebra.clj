@@ -23,15 +23,16 @@
   should always be positive."
   ([start finish t]
    (+ (* (- 1.0 t) start) (* t finish)))
-  ([{:keys [exponent tanh-factor]} start finish t]
+  ([{:keys [exponent tanh-factor s-factor]} start finish t]
    (when exponent (assert (pos? exponent))) ;; Exponent should always be > 0
    (cond
      exponent (let [lo (pow 1 exponent)
                     hi (pow 2 exponent)]
                 (-> t inc (pow exponent) (rescale lo hi start finish)))
      tanh-factor (cond-> (Math/tanh (* t tanh-factor))
-                   (neg? tanh-factor) inc
-                   :always (rescale 0 1 start finish))
+                   (neg? tanh-factor) (rescale -1 0 finish start)
+                   (pos? tanh-factor) (rescale 0 1 start finish))
+     s-factor (-> t (rescale 0 1 -1 1) (* s-factor) Math/tanh (rescale -1 1 start finish))
      :else (interpolate start finish t))))
 
 (defn interpolate-multi

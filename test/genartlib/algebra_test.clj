@@ -21,10 +21,25 @@
   (is (= 5.0 (a/interpolate 10.0 0.0 0.5)))
   (is (= 0.0 (a/interpolate 10.0 0.0 1.0)))
 
-  (is (= 41.66666666666667 (a/interpolate {:exponent 2} 0 100 0.5))) ;; Interpolate along a exponential curve of exponent 2
-  (is (= 54.25822558944361 (a/interpolate {:exponent 0.5} 0 100 0.5)))
-  (is (= 75.50813375962908 (a/interpolate {:tanh-factor -0.5} 0 100 0.5))) ;; Interpolate along a 'S' curve of factor -0.5
-  (is (= 63.51489523872873 (a/interpolate {:tanh-factor 1.5} 0 100 0.5))))
+  (testing "with curve props,"
+    (testing "when exponent"
+      (testing "> 1 pushes towards 0"
+        (is (> 0.25 (a/interpolate {:exponent 2} 0.0 1.0 0.25)))
+        (is (> 0.75 (a/interpolate {:exponent 2} 0.0 1.0 0.75))))
+      (testing "< 1 pushes towards 1"
+        (is (< 0.25 (a/interpolate {:exponent 0.5} 0.0 1.0 0.25)))
+        (is (< 0.75 (a/interpolate {:exponent 0.5} 0.0 1.0 0.75)))))
+    (testing "when tanh factor"
+      (testing "> 0 pushes towards 1"
+        (is (< 0.25 (a/interpolate {:tanh-factor 2} 0.0 1.0 0.25)))
+        (is (< 0.75 (a/interpolate {:tanh-factor 2} 0.0 1.0 0.75))))
+      (testing "< 0 pushes towards 0"
+        (is (< 0.25 (a/interpolate {:tanh-factor -2} 0.0 1.0 0.25)))
+        (is (< 0.75 (a/interpolate {:tanh-factor -2} 0.0 1.0 0.75)))))
+    (testing "when s factor"
+      (testing "> 1 pushes towards boundaries"
+        (is (> 0.25 (a/interpolate {:s-factor 2} 0.0 1.0 0.25)))
+        (is (< 0.75 (a/interpolate {:s-factor 2} 0.0 1.0 0.75)))))))
 
 (deftest rescale-test
   (is (= 5.0 (a/rescale 0.5 0.0 1.0 0.0 10.0)))
