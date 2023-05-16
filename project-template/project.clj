@@ -7,4 +7,4 @@
              "-Dsun.java2d.uiScale=1.0"] ; adjust scaling for high DPI displays
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
-  :aot [sketch.dynamic])
+  :aot [sketch.dynamic]) ; consider disabling, this can cause edge-case issues
