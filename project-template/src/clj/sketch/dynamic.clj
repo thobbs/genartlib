@@ -5,18 +5,30 @@
             ; [genartlib.geometry :refer :all]
             ; [genartlib.random :refer :all]
             [genartlib.util :refer [set-color-mode w h]]
-            [quil.core :as q]))
+            [quil.core :as q])
+  ; you can import Java classes like so:
   ; (:import [sketch Example]))
+  )
 
-(defn setup []
+; the setup function is only called once by Processing during startup
+(defn setup
+  []
   (q/smooth)
   ; avoid some saving issues
-  (q/hint :disable-async-saveframe))
+  (q/hint :disable-async-saveframe)
+
+  ; create a directory for storing versioned code
+  ; This uses "bash -c" to support my WSL setup, but if on Linux or Mac
+  ; you could just call mkdir directly
+  (sh "bash" "-c" "mkdir versioned-code"))
 
 (declare actual-draw)
 
-(defn draw []
-  ; disable animation, just one frame
+; the draw function will be called every time we refresh (i.e. reload the code
+; and re-execute it)
+(defn draw
+  []
+  ; disable animation, just draw one frame
   (q/no-loop)
 
   ; set color space to HSB with hue in [0, 360], saturation in [0, 100],
@@ -26,15 +38,23 @@
   ; make it easy to generate multiple images
   (doseq [img-num (range 1)]
     (let [cur-time (System/currentTimeMillis)
+          ; Grab the current time in nanos to use for a seed. This guarantees
+          ; that we get a new seed every run, and it also increases every time
+          ; (unless we restart the process)
           seed (System/nanoTime)]
 
-      ; use "bash -c" to support my WSL setup
-      (sh "bash" "-c" "mkdir versioned-code")
-      (let [code-dirname (str "versioned-code/" seed)]
-        (sh "bash" "-c" (str "cp -R src/ " code-dirname)))
+      ; only save the versioned code the first time in this loop (because the code
+      ; will never change inside of this loop)
+      (when (zero? img-num)
+        (let [code-dirname (str "versioned-code/" seed)]
+          ; only copy source files, to avoid duplicating temporary files opened
+          ; by vim, etc. Also zip them, since they will rarely be read, compression
+          ; ratio is good, and the number of total files will stay lower
+          (sh "bash" "-c" (str "zip -r " code-dirname " src -i '*.clj' '*.java'"))))
 
       (println "setting seed to:" seed)
-      (q/random-seed seed)
+      (q/random-seed seed) ; used by Processing for most random functions
+      (q/noise-seed seed) ; used by Processing for perlin noise
 
       (try
         (actual-draw)
@@ -46,12 +66,27 @@
         (q/save img-filename)
         (println "done saving" img-filename)
 
-        ; Some part of image saving appears to be async on windows. This is lame, but
+        ; Some part of image saving appears to be async on Windows. This is lame, but
         ; for now, add a sleep to help avoid compressing partially-written files.
         (Thread/sleep 500)
-        (sh "bash" "-c" (str "convert -compress lzw " img-filename " " img-filename))
-        (println "done compressing")))))
 
-(defn actual-draw []
-  ; art goes here
-  )
+        ; The 'convert' command comes from ImageMagick. By default, processing will save
+        ; un-compressed tif files, which tend to be quite large. This applies LZW compression,
+        ; which is lossless and reasonably compact. This command needs to be available on the
+        ; command line for this to be successful.
+        (let [convert-cmd (str "convert -compress lzw " img-filename " " img-filename)
+              results (sh "bash" "-c" convert-cmd)]
+          (if (zero? (:exit results))
+            (println "done compressing")
+            (println "WARNING: compression failed."
+                     "Command was: bash -c '" convert-cmd "'; err:" (:err results))))))))
+
+(defn actual-draw
+  []
+  ; Art goes here. For example:
+  (q/background 40 2 98) ; off-white background
+  (q/stroke 0 0 5) ; line color is nearly black
+  (q/stroke-weight (w 0.001)) ; line thickness is 0.1% of the image width
+
+  ; draw a horizontal line
+  (q/line (w 0.1) (h 0.5) (w 0.9) (h 0.5)))
