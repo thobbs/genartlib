@@ -1,0 +1,11 @@
+# How to Use this Project Template
+
+First, you should have lein installed (https://leiningen.org/).
+
+Copy the contents of this directory. Inside that directory copy, run `lein`. This will start a clojure repl, and install dependencies if necessary.
+
+Inside the lein repl, run `(use 'sketch.core)` to initialize the Processing sketch. You only need to call this once. Later calls will have no effect.
+
+To run the sketch again, run `(refresh)` in the repl. This will reload your code before executing, so any code changes will be applied.
+
+I recommend you read the docs for Processing, Quil (a thin Clojure wrapper around Processing), and genartlib.
