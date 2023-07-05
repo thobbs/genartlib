@@ -113,7 +113,7 @@
 (defn make-path
   [points]
   (->> points
-       (map #(s/join "," %))
+       (map #(format "%.1f,%.1f" (first %) (second %)))
        (s/join " ")
        (format "    <path d=\"M %s\"/>\n")))
 
