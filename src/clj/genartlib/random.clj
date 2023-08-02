@@ -95,3 +95,22 @@
   (map second
        (sort (for [item items]
                [(random 0.0 1.0) item]))))
+
+
+(defn- vec-swap [v i j]
+  (-> v
+      (assoc i (v j))
+      (assoc j (v i))))
+
+(defn limited-shuffle
+  "A limited shuffle that only executes n random swaps of the
+   contents of `items`. The lower n is, the closer `items` will
+   be to its original order."
+  [n items]
+  (loop [altered-items (vec items)
+         n n]
+    (if (<= n 0)
+      altered-items
+      (let [i (int (random 0 (count items)))
+            j (int (random 0 (count items)))]
+        (recur (vec-swap altered-items i j) (dec n))))))

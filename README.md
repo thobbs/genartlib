@@ -79,6 +79,7 @@ The following algebra-ish functions are defined:
 * `choice` - pick from a list of items with uniform probability
 * `weighted-choice` - pick from a list of items, each with an assigned probability
 * `repeatable-shuffle` - a version of shuffle that uses Processing's Random, in order to ensure repeatability with the same seed
+* `limited-shuffle` - performs `n` swaps on a seq in order to partially shuffle it
 
 ### Plotter
 
