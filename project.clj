@@ -1,4 +1,4 @@
-(defproject genartlib "0.1.24"
+(defproject genartlib "0.1.25-SNAPSHOT"
   :description "Utilities and common tasks for generative artwork"
   :url "http://github.com/thobbs/genartlib"
   :license {:name "MIT"
@@ -6,7 +6,8 @@
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.apache.commons/commons-math3 "3.3"]
                  [quil "3.1.0"]]
-  :deploy-repositories [["releases" {:sign-releases false :url "https://clojars.org"}]
+  :deploy-repositories [["clojars" {:sign-releases false}]
+                        ["releases" {:sign-releases false :url "https://clojars.org"}]
                         ["snapshots" {:sign-releases false :url "https://clojars.org"}]]
   :source-paths ["src/clj"]
   :java-source-paths ["src/java"]
