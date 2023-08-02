@@ -187,12 +187,17 @@
   (let [border-lines [[[0 0] [(w) 0]]
                       [[(w) 0] [(w) (h)]]
                       [[(w) (h)] [0 (h)]]
-                      [[0 (h)] [0 0]]]]
+                      [[0 (h)] [0 0]]]
+
+        p1 (first points)
+        starting-in-bounds? (in-bounds? p1)
+        initial-segment (if starting-in-bounds? [p1] [])]
+
     (loop [points (rest points)
            segments []
-           current-segment (if (in-bounds? (first points)) [(first points)] [])
-           was-in-bounds? (in-bounds? (first points))
-           prev-point (first points)]
+           current-segment initial-segment
+           was-in-bounds? starting-in-bounds?
+           prev-point p1]
 
       (if (empty? points)
         (let [final-segments (conj segments current-segment)]
