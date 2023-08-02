@@ -48,9 +48,9 @@
 (declare slope)
 (declare y-intercept)
 
-(defn lines-intersection-point [[start-x-1 start-y-1] [end-x-1 end-y-1]
-                                [start-x-2 start-y-2] [end-x-2 end-y-2]]
-
+(defn lines-intersection-point
+  [[start-x-1 start-y-1] [end-x-1 end-y-1]
+   [start-x-2 start-y-2] [end-x-2 end-y-2]]
   (let [[[start-x-1 start-y-1] [end-x-1 end-y-1]] (if (> end-x-1 start-x-1)
                                                     [[start-x-1 start-y-1] [end-x-1 end-y-1]]
                                                     [[end-x-1 end-y-1] [start-x-1 start-y-1]])
