@@ -1,3 +1,10 @@
+0.1.25
+======
+Released August 15, 2023
+
+* Fix bug in genartlib.plotter/sort-curves-for-plotters that could duplicate
+  some curves
+
 0.1.22
 ======
 Released January 25, 2021
