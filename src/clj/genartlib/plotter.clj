@@ -6,10 +6,11 @@
   [[x y] curves]
   (loop [curves curves
          closest-curve nil
+         reverse-closest? false ; track whether we're close to the start or end of the closest curve
          previous-closest-dist nil]
 
     (if (empty? curves)
-      closest-curve
+      [closest-curve reverse-closest?]
 
       (let [next-curve (first curves)
             [start-x start-y] (first next-curve)
@@ -20,11 +21,9 @@
 
         (if (or (nil? closest-curve) (< closest-dist previous-closest-dist))
           ; the start or end of the curve is closer than previous best
-          (if (< start-dist end-dist)
-            (recur (rest curves) next-curve start-dist)
-            (recur (rest curves) (reverse next-curve) end-dist))
+          (recur (rest curves) next-curve (< end-dist start-dist) start-dist)
           ; both ends of curve are farther away
-          (recur (rest curves) closest-curve previous-closest-dist))))))
+          (recur (rest curves) closest-curve reverse-closest? previous-closest-dist))))))
 
 (defn sort-curves-for-plotting
   "Takes a seq of curves and optimizes them for plotting. This involves removing
@@ -41,7 +40,7 @@
       (if (zero? (count unsorted-curves))
         (persistent! sorted-curves)
 
-        (let [curve (get-closest-curve previous-point unsorted-curves)]
+        (let [[curve should-reverse?] (get-closest-curve previous-point unsorted-curves)]
           (recur (disj unsorted-curves curve)
-                 (conj! sorted-curves curve)
-                 (last curve)))))))
+                 (conj! sorted-curves (if should-reverse? (reverse curve) curve))
+                 (if should-reverse? (first curve) (last curve))))))))
