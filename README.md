@@ -20,6 +20,12 @@ To install, add this to your dependencies in `project.clj`:
 [genartlib "1.0.0"]
 ```
 
+## Dependencies
+
+This version of genartlib is compatible with Processing 4.x and Quil 4.x. It has been tested with JDK 21.
+
+The previous 0.x versions of genartlib were compatible with Processing/Quil 3.x and JDK 1.8.
+
 ## Contents
 
 View the [API Docs](https://cljdoc.org/d/genartlib/genartlib/CURRENT).
