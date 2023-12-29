@@ -62,24 +62,9 @@
           (println "Exception in draw function:" t)))
 
       (println "gen time:" (/ (- (System/currentTimeMillis) cur-time) 1000.0) "s")
-      (let [img-filename (str "img-" img-num "-" cur-time "-" seed ".tif")]
+      (let [img-filename (str "img-" img-num "-" cur-time "-" seed ".png")]
         (q/save img-filename)
-        (println "done saving" img-filename)
-
-        ; Some part of image saving appears to be async on Windows. This is lame, but
-        ; for now, add a sleep to help avoid compressing partially-written files.
-        (Thread/sleep 500)
-
-        ; The 'convert' command comes from ImageMagick. By default, processing will save
-        ; un-compressed tif files, which tend to be quite large. This applies LZW compression,
-        ; which is lossless and reasonably compact. This command needs to be available on the
-        ; command line for this to be successful.
-        (let [convert-cmd (str "convert -compress lzw " img-filename " " img-filename)
-              results (sh "bash" "-c" convert-cmd)]
-          (if (zero? (:exit results))
-            (println "done compressing")
-            (println "WARNING: compression failed."
-                     "Command was: bash -c '" convert-cmd "'; err:" (:err results))))))))
+        (println "done saving" img-filename)))))
 
 (defn actual-draw
   []

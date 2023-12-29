@@ -1,3 +1,9 @@
+1.0.0
+=====
+Released Dec 29, 2023
+
+* Upgrade Quil to 4.3.1323 (which implies an upgrade to Processing 4)
+
 0.1.25
 ======
 Released August 15, 2023
