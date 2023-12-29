@@ -3,6 +3,7 @@
 Released Dec 29, 2023
 
 * Upgrade Quil to 4.3.1323 (which implies an upgrade to Processing 4)
+  - Previous version was compatible with Java 1.8, now supports JDK 21+
 
 0.1.25
 ======
