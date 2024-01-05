@@ -1,9 +1,9 @@
 (ns genartlib.geometry
   (:require
-    [genartlib.algebra :refer [angle avg interpolate]]
-    [quil.core :refer [dist cos sin]])
+   [genartlib.algebra :refer [angle avg interpolate angular-coords]]
+   [quil.core :refer [dist]])
   (:import
-    [genartlib PolyUtils]))
+   [genartlib PolyUtils]))
 
 (defn rotate-polygon
   "Rotates a polygon clockwise about its centroid.  The theta argument determines
@@ -24,11 +24,9 @@
       (map (fn [[x y]]
              (let [current-angle (angle x-centroid y-centroid x y)
                    new-angle (+ current-angle theta)
-                   hypot (dist x y x-centroid y-centroid)
-                   x-offset (* hypot (cos new-angle))
-                   y-offset (* hypot (sin new-angle))]
-               [(+ x-offset x-centroid) (+ y-offset y-centroid)]))
-             points))))
+                   hypot (dist x y x-centroid y-centroid)]
+               (angular-coords x-centroid y-centroid new-angle hypot)))
+           points))))
 
 (defn polygon-contains-point?
   "Returns true if a polygon contains the given point.  The polygon
