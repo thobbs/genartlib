@@ -1,28 +1,12 @@
 (ns genartlib.algebra
   (:require
-    [genartlib.util :refer [between?]]
-    [quil.core :refer [PI atan2 cos sin dist sqrt abs]]))
+   [genartlib.util :refer [between?]]
+   [quil.core :refer [PI atan2 cos sin dist sqrt abs pow]]))
 
 (defn avg
   "Returns the average of the arguments"
   [& values]
   (/ (apply + values) (count values)))
-
-(defn interpolate
-  "Interpolates a point between [start, finish] at point t, where
-   t is between 0.0 and 1.0"
-  [start finish t]
-  (+ (* (- 1.0 t) start) (* t finish)))
-
-(defn interpolate-multi
-  "Interpolates between two multi-dimensional points at t, where
-   t is between 0.0 and 1.0"
-  [start-point finish-point t]
-  (map
-    (fn [a b]
-      (interpolate a b t))
-    start-point
-    finish-point))
 
 (defn rescale
   "Rescales value from range [old-min, old-max] to [new-min, new-max]"
@@ -31,6 +15,42 @@
         new-spread (- new-max new-min)]
     (+ (* (- value old-min) (/ new-spread old-spread))
        new-min)))
+
+(defn interpolate
+  "Interpolates a point between [start, finish] at point t, where t is between
+  0.0 and 1.0. When exponent or tanh-factor options are supplied, an exponential
+  or s-curve interpolation is used, instead of linear interpolation. Exponent
+  should always be positive."
+  ([start finish t]
+   (+ (* (- 1.0 t) start) (* t finish)))
+  ([{:keys [exponent tanh-factor s-factor]} start finish t]
+   (when exponent (assert (pos? exponent))) ;; Exponent should always be > 0
+   (cond
+     exponent (let [lo (pow 1 exponent)
+                    hi (pow 2 exponent)]
+                (-> t inc (pow exponent) (rescale lo hi start finish)))
+     tanh-factor (cond-> (Math/tanh (* t tanh-factor))
+                   (neg? tanh-factor) (rescale -1 0 finish start)
+                   (pos? tanh-factor) (rescale 0 1 start finish))
+     s-factor (-> t (rescale 0 1 -1 1) (* s-factor) Math/tanh (rescale -1 1 start finish))
+     :else (interpolate start finish t))))
+
+(defn interpolate-multi
+  "Interpolates between two multi-dimensional points at t, where t is between
+  0.0 and 1.0. Also accepts curve props like interpolate."
+  ([start-point finish-point t]
+   (map
+    (fn [a b]
+      (interpolate a b t))
+    start-point
+    finish-point))
+  ([props start-point finish-point t]
+   (let [interpolate-fn (partial interpolate props)]
+     (map
+      (fn [a b]
+        (interpolate-fn a b t))
+      start-point
+      finish-point))))
 
 (defn line-intersection
   "Finds the intersection of two lines.  Each line argument is a vector
