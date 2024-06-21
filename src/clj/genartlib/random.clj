@@ -72,21 +72,22 @@
 
 (defn weighted-choice
   "Given a sequence of alternating item and weight arguments, chooses one of the
-   items with a probability equal to the weight. Each weight should be
-   between 0.0 and 1.0, and all weights should sum to 1.0."
+   items with a probability equal to the weight. Each weight should be a
+   positive value."
   [& items-and-weights]
-  (assert (zero? (mod (count items-and-weights) 2)))
-  (assert (>= (count items-and-weights) 2))
-  (let [r (random 0 1.0)]
-    (loop [weight-seen 0
-           remaining-items items-and-weights]
-      (if (<= (count remaining-items) 2)
-        (first remaining-items)
-        (let [new-weight (second remaining-items)
-              end-bound (+ weight-seen new-weight)]
-          (if (between? r weight-seen end-bound)
-            (first remaining-items)
-            (recur (+ weight-seen (second remaining-items)) (drop 2 remaining-items))))))))
+  (when (or (odd? (count items-and-weights))
+            (< (count items-and-weights) 2))
+    (throw (IllegalArgumentException. "weighted-choice expects a (non-zero) even number of arguments")))
+  (let [total-weight (->> items-and-weights (rest) (take-nth 2) (reduce +))
+        r (* (random 0.0 1.0) total-weight)]
+    (loop [items-and-weights items-and-weights
+           cumulative-weight 0]
+      (let [next-item (first items-and-weights)
+            next-weight (second items-and-weights)
+            new-cumulative-weight (+ cumulative-weight next-weight)]
+        (if (>= new-cumulative-weight r)
+          next-item
+          (recur (drop 2 items-and-weights) new-cumulative-weight))))))
 
 (defn repeatable-shuffle
   "A version of shuffle that uses Processing's random fn to ensure that
@@ -95,7 +96,6 @@
   (map second
        (sort (for [item items]
                [(random 0.0 1.0) item]))))
-
 
 (defn- vec-swap [v i j]
   (-> v
