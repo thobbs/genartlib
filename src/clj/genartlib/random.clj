@@ -1,6 +1,6 @@
 (ns genartlib.random
   (:require [genartlib.util :refer [between?]]
-            [quil.core :refer [random-gaussian cos sin abs random sqrt TWO-PI]])
+            [quil.core :refer [random-gaussian cos sin random sqrt TWO-PI]])
   (:import [org.apache.commons.math3.distribution ParetoDistribution]))
 
 (defn gauss
