@@ -2,6 +2,7 @@
 ==================
 * Changed genartlib.random/weighted-choice from expecting all weights to sum
   to 1.0 to allowing weights to sum to any value.
+* Upgrade Quil dep to latest, Clojure dep to 1.11.3
 
 1.0.0
 =====
