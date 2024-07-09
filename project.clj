@@ -1,4 +1,4 @@
-(defproject genartlib "1.1.1"
+(defproject genartlib "1.1.1-SNAPSHOT"
   :description "Utilities and common tasks for generative artwork"
   :url "http://github.com/thobbs/genartlib"
   :license {:name "MIT"
