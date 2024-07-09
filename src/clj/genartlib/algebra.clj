@@ -1,7 +1,7 @@
 (ns genartlib.algebra
   (:require
     [genartlib.util :refer [between?]]
-    [quil.core :refer [PI atan2 cos sin dist sqrt abs]]))
+    [quil.core :refer [PI atan2 cos sin dist sqrt]]))
 
 (defn avg
   "Returns the average of the arguments"
@@ -38,7 +38,7 @@
   [line1 line2]
   (let [[m b start-x-1 end-x-1] line1
         [n c start-x-2 end-x-2] line2]
-    (when (> (Math/abs (- m n)) 0.001)
+    (when (> (abs (- m n)) 0.001)
       (let [x (/ (- c b) (- m n))
             y (+ (* m x) b)]
         (when (and (between? x start-x-1 end-x-1)

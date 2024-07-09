@@ -1,3 +1,9 @@
+1.1.1
+=====
+Unreleased
+
+* Drop usage of quil.core/abs, use Clojure's built-in abs fn
+
 1.1.0
 =====
 Released June 25, 2024
