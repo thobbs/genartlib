@@ -17,7 +17,7 @@ To see and read about my artwork, visit [tylerxhobbs.com](https://tylerxhobbs.co
 To install, add this to your dependencies in `project.clj`:
 
 ```clojure
-[genartlib "1.0.0"]
+[genartlib "1.1.1"]
 ```
 
 ## Dependencies
@@ -34,9 +34,7 @@ The genartlib library has the following tools:
 
 ### Project Template
 
-Under project-template/, you'll find the basic setup that I use for every new generative art project. This is geared towards creating static images.
-
-I also wrote a bit about [my development setup and how I use it](https://tylerxhobbs.com/essays/2015/using-quil-for-artwork).
+Under [project-template/](https://github.com/thobbs/genartlib/tree/master/project-template), you'll find the basic setup that I use for every new generative art project. This is geared towards creating static images.
 
 ### Algebra
 
