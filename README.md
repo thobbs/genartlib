@@ -36,7 +36,7 @@ The genartlib library has the following tools:
 
 Under [project-template/](https://github.com/thobbs/genartlib/tree/master/project-template), you'll find the basic setup that I use for every new generative art project. This is geared towards creating static images.
 
-### Algebra
+### `genartlib.algebra`
 
 The following algebra-ish functions are defined:
 * `avg` - average
@@ -51,13 +51,13 @@ The following algebra-ish functions are defined:
 * `point-dist` - distance between two points
 * `point-to-line-dist` - distance from a point to a line
 
-### Geometry
+### `genartlib.geometry`
 
 * `polygon-contains-point?` - a fast test for checking if a point falls inside a polygon
 * `rotate-polygon` - rotates around the average center of the poly
 * `shrink-polygon` - shrink by a ratio
 
-### Curves
+### `genartlib.curves`
 
 * `chaikin-curve` - a curve-smoothing algorithm
 * `chaikin-curve-retain-ends` - a variation that preserves the original end points
@@ -70,7 +70,7 @@ The following algebra-ish functions are defined:
 * `trim-curve-start` - removes the specified length from the start of a curve
 * `trim-curve-end` - removes the specified length from the end of a curve
 
-### Random
+### `genartlib.random`
 
 * `gauss` - sample a gaussian probability distribution
 * `abs-gauss` - basically shorthand for `(abs (gauss ....))`
@@ -85,9 +85,13 @@ The following algebra-ish functions are defined:
 * `repeatable-shuffle` - a version of shuffle that uses Processing's Random, in order to ensure repeatability with the same seed
 * `limited-shuffle` - performs `n` swaps on a seq in order to partially shuffle it
 
-### Plotter
+### `genartlib.plotter`
 
 * `sort-curves-for-plotting` - sorts a seq of curves in order to minimize plotter travel distance
+
+### `genartlib.poisson-disc`
+
+* `poisson-disc-sample` - generate a seq of points from a Poisson disc set with a guaranteed minimum spacing
 
 ### Capture
 
