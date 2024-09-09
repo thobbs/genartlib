@@ -1,6 +1,6 @@
 1.2.0
 =====
-Unreleased
+Released September 9, 2024
 
 * Add genartlib.poisson-disc namespace
 
