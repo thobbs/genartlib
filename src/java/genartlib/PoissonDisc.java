@@ -47,7 +47,7 @@ public class PoissonDisc {
     activeList.add(initial);
     points.add(initial);
     while (!activeList.isEmpty()) {
-      Point p = activeList.removeLast();
+      Point p = activeList.remove(activeList.size() - 1);
 
       boolean foundNewPoint = false;
       for (int k = 0; k < maxAttempts; k++) {
