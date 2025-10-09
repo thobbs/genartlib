@@ -1,3 +1,15 @@
+1.2.2
+=====
+Released Oct 9, 2025
+
+* Don't use removeLast()
+
+1.2.1
+=====
+Released Oct 9, 2025
+
+* Non-recursive implementation of curves/line-simplification
+
 1.2.0
 =====
 Released September 9, 2024
