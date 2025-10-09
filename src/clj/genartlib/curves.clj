@@ -1,7 +1,9 @@
 (ns genartlib.curves
   (:require
     [genartlib.algebra :refer [interpolate point-dist lines-intersection-point]]
-    [genartlib.util :refer [enumerate w h]]))
+    [genartlib.util :refer [enumerate w h]])
+  (:import
+    [genartlib LineSimplification LineSimplification$Point]))
 
 (defn ^:private single-chaikin-step
   [points tightness]
@@ -161,19 +163,12 @@
    A good value for `min-tolerated-dist` is probably between 0.0001 and 0.01 times
    the image width, depending on your use case."
   [points min-tolerated-dist]
-  (if (<= (count points) 2)
-    points
-    (let [start-point (first points)
-          last-point (last points)
-          point-dists (map #(point-to-line-dist start-point last-point %) points)
-          [max-index max-dist] (apply max-key second (enumerate point-dists))]
-      (if (< max-dist min-tolerated-dist)
-        [start-point last-point]
-        (concat
-          (line-simplification (take (inc max-index) points)
-                               min-tolerated-dist)
-          (drop 1 (line-simplification (drop max-index points)
-                                       min-tolerated-dist)))))))
+  (let [args (mapv
+               (fn [[x y]] (LineSimplification$Point. x y))
+               points)
+        results (LineSimplification/simplify args min-tolerated-dist)]
+    (map #(vector (.x %) (.y %)) results)))
+
 (defn ^:private in-bounds?
   [[x y]]
   (and (>= x 0)
