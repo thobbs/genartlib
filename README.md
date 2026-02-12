@@ -103,6 +103,11 @@ nice part is that the sketch will still function as normal.
 * `with-command-capture` - captures many draw operations in an EDN format that is easy to manipulate with Clojure
 * `command-replay`/`command-replay-file` - replays the results of `with-command-capture`
 
+### `genartlib.graphics`
+
+* `copy-to` - copies the pixel contents of one PGraphics to another
+* `load-image-sync` - given a filename, synchronously loads it as a PImage
+
 ### `genartlib.utils`
 
 * `w` and `h` - shorthand for expressing a length or position in terms of percentage of the image width or height - good for using a pseudo-vector approach to creating images
